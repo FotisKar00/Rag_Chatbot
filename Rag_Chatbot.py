@@ -3,7 +3,7 @@ from sentence_transformers import SentenceTransformer
 import faiss
 import ollama
 
-with open("laptop.txt", "r") as f:
+with open("Instructions.txt", "r") as f:
     text = f.read()
 
 
