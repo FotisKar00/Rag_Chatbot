@@ -12,29 +12,20 @@ splitter = RecursiveCharacterTextSplitter(
     chunk_size=120,    
     chunk_overlap=30  
 )
-docs = splitter.split_documents(documents)
-
-print(f"Δημιουργήθηκαν {len(docs)} chunks.")
+chunks = splitter.split_documents(documents)
 
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
-vectorstore = FAISS.from_documents(docs, embeddings)
+vectorstore = FAISS.from_documents(chunks, embeddings)
 retriever = vectorstore.as_retriever()
-
-print(f"FAISS vectorstore έτοιμο με {len(docs)} vectors.")
 
 llm = ChatOllama(model="tinyllama") 
 
 
 def rag_answer(query: str, top_k=3) -> str:
-    docs = retriever._get_relevant_documents(query, run_manager=None)[:top_k]
+    relevant_chokes = retriever._get_relevant_documents(query, run_manager=None)[:top_k]
 
-    context = "\n".join([doc.page_content for doc in docs])
-
-    print("\n--- Retrieved Chunks ---\n")
-    for doc in docs:
-        print(doc.page_content)
-        print("-----")
+    context = "\n".join([doc.page_content for doc in relevant_chokes])
 
     prompt = f"""
 Use the following context to answer the question.

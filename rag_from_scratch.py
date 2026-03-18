@@ -19,8 +19,6 @@ def split_text(text, chunk_size=120, overlap=30):
 
 chunks = split_text(text)
 
-print(f"Δημιουργήθηκαν {len(chunks)} chunks.")
-
 embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 
 embeddings = np.array(
@@ -34,8 +32,6 @@ index = faiss.IndexFlatL2(dim)
 
 index.add(embeddings)
 
-print(f"FAISS index έτοιμο με {index.ntotal} vectors.")
-
 def rag_answer(query, top_k=3):
 
     query_vec = np.array(
@@ -45,13 +41,6 @@ def rag_answer(query, top_k=3):
     distances, indices = index.search(query_vec, top_k)
 
     context = "\n".join([chunks[i] for i in indices[0]])
-
-    print("\n--- Retrieved Chunks ---\n")
-
-    for i in indices[0]:
-        print(chunks[i])
-        print("-----")
-
     
     prompt = f"""
 Use the following context to answer the question.
