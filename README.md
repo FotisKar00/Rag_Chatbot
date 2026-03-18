@@ -48,7 +48,4 @@ Type your question, and the chatbot will answer based on the context. Type exit 
 ### Requirements
 Python 3.10+
 
-#### Install packages for rag_from_scratch:
-```bash
-pip install numpy faiss-cpu sentence-transformers ollama
-```
+Ollama CLI installed and configured
